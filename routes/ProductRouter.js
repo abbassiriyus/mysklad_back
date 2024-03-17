@@ -7,7 +7,8 @@ async function getAllProducts() {
   try {
     const response = await axios.get('https://api.mysklad.com/api/rest/v1/entity/product', {
       headers: {
-        Authorization: `Bearer ${process.env.CODE_BASE}` // YOUR_ACCESS_TOKEN ni o'zgartiring
+        'Authorization': `Bearer ${process.env.CODE_BASE}`, // YOUR_ACCESS_TOKEN ni o'zgartiring
+        'Accept-Encoding':'gzip'
       }
     });
 
