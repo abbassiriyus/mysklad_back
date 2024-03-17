@@ -26,6 +26,7 @@ getAllProducts()
     req.status(products)
   })
   .catch(error => {
+    req.status(404).send(error.message)
     console.error('Xatolik:', error.message);
   });
 
