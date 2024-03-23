@@ -3,31 +3,34 @@ const express = require('express');
 const router = express.Router();
 const axios = require('axios');
 
-async function getAllProducts() {
+async function getAllProducts(id) {
   try {
-    const response = await axios.get('https://api.mysklad.ru/api/rest/v1/entity/product', {
+    const response = await axios.get(`https://api.moysklad.ru/api/remap/1.2/entity/product?expand=images&limit=${id}`, {
       headers: {
-        'Authorization': `Bearer ${process.env.CODE_BASE}`, // YOUR_ACCESS_TOKEN ni o'zgartiring
-        'Accept-Encoding':'gzip'
+        "Accept":'*/*',
+        "User-Agent":'Thunder Client (https://www.thunderclient.com)',
+        'Authorization':`Basic ${process.env.CODE_BASE}`,
+        'Accept-Encoding':'gzip',
       }
     });
-
     return response.data.rows;
   } catch (error) {
-    console.error('Xatolik yuz berdi:', error);
-    throw error;
+    req.status(404).send(error.message)
   }
 }
 
-  router.get('/product',(res,req)=>{
-getAllProducts()
+  router.get('/product',(req,res)=>{
+    var { limit } = req.query; 
+    if(!limit){
+      limit=10
+    }
+getAllProducts(limit)
   .then(products => {
-    console.log('Hamma maxsulotlar:',products.rows);
-    req.status(products)
+    res.status(200).send(products)
+
   })
   .catch(error => {
-    req.status(404).send(error.message)
-    console.error('Xatolik:', error.message);
+    res.status(404).send(error.message)
   });
 
   })
