@@ -1,12 +1,19 @@
 create table category(
  "id" serial primary key,
  "category_id" text not null,
- "category_title" integer not null,
+ "category_title" text not null,
  "image" text,
  "subcategory" integer not null,
  "time_create" timestamp default current_timestamp not null,
  "time_update" timestamp default current_timestamp not null
 );
+create table users(
+ "id" serial primary key,
+ "login" text not null,
+ "password" text not null,
+ "time_create" timestamp default current_timestamp not null,
+ "time_update" timestamp default current_timestamp not null
+)
 create table top_tovar(
  "id" serial primary key,
  "category_id" text not null,
@@ -44,3 +51,6 @@ create table company(
  "time_create" timestamp default current_timestamp not null,
  "time_update" timestamp default current_timestamp not null
 );
+
+ALTER SEQUENCE top_tovar_id_seq OWNED BY top_tovar.id;
+GRANT USAGE, SELECT ON SEQUENCE top_tovar_id_seq TO abbasuz1_mysklad;

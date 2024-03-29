@@ -1,10 +1,12 @@
 const express = require('express');
 const pool = require('../db'); // Assuming the 'db.js' file is in the same directory
 const { upload_file, delete_file, put_file } = require('../middleware/file_upload');
+const validateJWT = require('../middleware/middleware');
+const { default: axios } = require('axios');
 const router = express.Router();
 
 // Create a new category
-router.post('/api/v1/category', async (req, res) => {
+router.post('/api/category', validateJWT , async (req, res) => {
   try {
     const { category_id, category_title,  subcategory } = req.body;
     var image=upload_file(req)
@@ -18,7 +20,7 @@ router.post('/api/v1/category', async (req, res) => {
 });
 
 // Retrieve all categories
-router.get('/api/v1/category', async (req, res) => {
+router.get('/api/category', async (req, res) => {
   try {
     const query = 'SELECT * FROM category';
     const allCategories = await pool.query(query);
@@ -28,8 +30,35 @@ router.get('/api/v1/category', async (req, res) => {
   }
 });
 
+async function getAllCategory() {
+  try {
+    const response = await axios.get(`https://api.moysklad.ru/api/remap/1.2/entity/productfolder`, {
+      headers: {
+        "Accept":'*/*',
+        "User-Agent":'Thunder Client (https://www.thunderclient.com)',
+        'Authorization':`Basic ${process.env.CODE_BASE}`,
+        'Accept-Encoding':'gzip',
+      }
+    });
+    return response.data.rows;
+    console.log(response);
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
+// Retrieve all categories
+router.get('/api/category/all', async (req, res) => {
+  try {
+    const allCategories = await getAllCategory() 
+    res.json(allCategories);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // Retrieve a specific category by ID
-router.get('/api/v1/category/:id', async (req, res) => {
+router.get('/api/category/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const query = 'SELECT * FROM category WHERE id = $1';
@@ -41,7 +70,7 @@ router.get('/api/v1/category/:id', async (req, res) => {
 });
 
 // Update a category
-router.put('/api/v1/category/:id', async (req, res) => {
+router.put('/api/category/:id',validateJWT, async (req, res) => {
   try {
     const { id } = req.params;
     const query1 = 'SELECT * FROM category WHERE id = $1';
@@ -60,7 +89,7 @@ router.put('/api/v1/category/:id', async (req, res) => {
 });
 
 // Delete a category
-router.delete('/api/v1/category/:id', async (req, res) => {
+router.delete('/api/category/:id',validateJWT, async (req, res) => {
   try {
     const { id } = req.params;
 

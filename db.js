@@ -2,7 +2,7 @@ const { Pool } = require("pg")
 
 
 const pool = new Pool({
-    connectionString: process.env.POSTGRES_URL ,
+    connectionString: 'postgres://default:76SuxrvNzMKg@ep-sweet-night-a2kqai9z-pooler.eu-central-1.aws.neon.tech:5432/verceldb?sslmode=require',
   })
   
 pool.connect(err => {
