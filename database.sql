@@ -26,6 +26,12 @@ create table best_seller(
  "time_create" timestamp default current_timestamp not null,
  "time_update" timestamp default current_timestamp not null
 );
+create table carousel(
+ "id" serial primary key,
+ "image" text not null,
+ "time_create" timestamp default current_timestamp not null,
+ "time_update" timestamp default current_timestamp not null
+);
 create table contact(
  "id" serial primary key,
 "fullname" text not null,
@@ -52,5 +58,5 @@ create table company(
  "time_update" timestamp default current_timestamp not null
 );
 
-ALTER SEQUENCE top_tovar_id_seq OWNED BY top_tovar.id;
-GRANT USAGE, SELECT ON SEQUENCE top_tovar_id_seq TO abbasuz1_mysklad;
+ALTER SEQUENCE carousel_id_seq OWNED BY carousel.id;
+GRANT USAGE, SELECT ON SEQUENCE carousel_id_seq TO abbasuz1_mysklad;

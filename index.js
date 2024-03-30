@@ -6,7 +6,7 @@ const userRouter=require("./routes/userRouter.js")
 const companyRouter=require("./routes/companyRouter.js")
 const bestSellerRouter=require("./routes/bestSellerRouter.js")
 const topRouter=require("./routes/topRouter.js")
-
+const carouselImageRouter=require('./routes/carouselImageRouter.js')
 
 
 const bodyParser = require('body-parser');
@@ -22,6 +22,8 @@ app.use(bodyParser.json());
 app.use(express.json());
 app.use(express.static('./uploads'))
 app.use('/api',ProductRouter)
+app.use('/api',carouselImageRouter)
+
 app.use('/api',companyRouter)
 app.use('/api',bestSellerRouter)
 app.use('/api',topRouter)
