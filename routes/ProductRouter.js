@@ -19,6 +19,33 @@ async function getAllProducts(id) {
   }
 }
 
+async function getProduct(id) {
+  try {
+    console.log(id);
+    const response = await axios.get(`https://api.moysklad.ru/api/remap/1.2/entity/product/${id}?expand=images`, {
+      headers: {
+        "Accept":'*/*',
+        "User-Agent":'Thunder Client (https://www.thunderclient.com)',
+        'Authorization':`Basic ${process.env.CODE_BASE}`,
+        'Accept-Encoding':'gzip',
+      }
+    });
+    return response.data;
+  } catch (error) {
+    // req.status(404).send(error.message)
+  }
+}
+
+router.get("/oneproduct/:id", async (req,res)=>{
+try{
+  var data=await getProduct(req.params.id)
+  console.log(data);
+  res.status(200).send(data)
+}catch(err){
+  res.status(400).send(err.message)
+}
+})
+
   router.get('/product',(req,res)=>{
     var { limit } = req.query; 
     if(!limit){
