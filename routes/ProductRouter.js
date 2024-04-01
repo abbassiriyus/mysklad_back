@@ -2,7 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const router = express.Router();
 const axios = require('axios');
-
+const fs=require('fs')
 async function getAllProducts(id) {
   try {
     const response = await axios.get(`https://api.moysklad.ru/api/remap/1.2/entity/product?expand=images&limit=${id}`, {
@@ -35,11 +35,37 @@ async function getProduct(id) {
     // req.status(404).send(error.message)
   }
 }
+const downloadImage = async (url, path) => {
+  const response = await axios({
+    url,
+    method: 'GET',
+    responseType: 'stream',
+    headers: {
+      "Accept":'*/*',
+      "User-Agent":'Thunder Client (https://www.thunderclient.com)',
+      'Authorization':`Basic ${process.env.CODE_BASE}`,
+      'Accept-Encoding':'gzip'
+    }
+  });
+
+  response.data.pipe(fs.createWriteStream(path));
+
+  return new Promise((resolve, reject) => {
+    response.data.on('end', () => {
+      resolve();
+    });
+
+    response.data.on('error', err => {
+      reject(err);
+    });
+  });
+};
 
 router.get("/oneproduct/:id", async (req,res)=>{
 try{
   var data=await getProduct(req.params.id)
   console.log(data);
+  downloadImage(`https://api.moysklad.ru/api/remap/1.2/download/d2c0999f-a801-4e08-99be-228b3d56de07`,"./image")
   res.status(200).send(data)
 }catch(err){
   res.status(400).send(err.message)
@@ -64,6 +90,7 @@ getAllProducts(limit)
 
   async function getCategoryProducts(id,limit,offset) {
     try {
+      console.log(offset);
       const response = await axios.get(`https://api.moysklad.ru/api/remap/1.2/entity/assortment?filter=productFolder=https://api.moysklad.ru/api/remap/1.2/entity/productfolder/${id}&expand=images&limit=${limit}&offset=${offset}`, {
         headers: {
           "Accept":'*/*',
@@ -107,8 +134,8 @@ res.status(200).send({count:data.length})
 router.get('/category/product/:id',async (req,res)=>{
   try{
    
-    if(req.params.offset){
-var a=req.params.offset
+    if(req.query.offset){
+var a=req.query.offset
     }else{
 var a=0
     }
