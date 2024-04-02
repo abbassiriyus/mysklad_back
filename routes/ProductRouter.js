@@ -3,13 +3,26 @@ const express = require('express');
 const router = express.Router();
 const axios = require('axios');
 const fs=require('fs')
+var pool =require('../db')
+
+async  function gettoken(){
+  const result = await pool.query('SELECT * FROM tokensklad');
+      const tokens = result.rows;
+      console.log(tokens);
+    if(tokens.length!=0){
+      return tokens[0].token
+    }else{
+      return "no"
+    }
+}
 async function getAllProducts(id) {
   try {
+    var a= await gettoken()
     const response = await axios.get(`https://api.moysklad.ru/api/remap/1.2/entity/product?expand=images&limit=${id}`, {
       headers: {
         "Accept":'*/*',
         "User-Agent":'Thunder Client (https://www.thunderclient.com)',
-        'Authorization':`Basic ${process.env.CODE_BASE}`,
+        'Authorization':`Basic ${a}`,
         'Accept-Encoding':'gzip',
       }
     });
@@ -22,11 +35,12 @@ async function getAllProducts(id) {
 async function getProduct(id) {
   try {
     console.log(id);
+    var a= await gettoken()
     const response = await axios.get(`https://api.moysklad.ru/api/remap/1.2/entity/product/${id}?expand=images`, {
       headers: {
         "Accept":'*/*',
         "User-Agent":'Thunder Client (https://www.thunderclient.com)',
-        'Authorization':`Basic ${process.env.CODE_BASE}`,
+        'Authorization':`Basic ${a}`,
         'Accept-Encoding':'gzip',
       }
     });
@@ -36,11 +50,12 @@ async function getProduct(id) {
   }
 }
 const downloadImage = async (url) => {
+  var a= await gettoken()
   const response = await axios({
     url,
     method: 'GET',
     headers: {
-      'Authorization':`Basic ${process.env.CODE_BASE}`,
+      'Authorization':`Basic ${a}`,
       'Accept-Encoding':'gzip'
     }
   });
@@ -77,7 +92,6 @@ try{
 getAllProducts(limit)
   .then(products => {
     res.status(200).send(products)
-
   })
   .catch(error => {
     res.status(404).send(error.message)
@@ -85,14 +99,14 @@ getAllProducts(limit)
 
   })
 
-  async function getCategoryProducts(id,limit,offset) {
+  async function getCategoryProducts(id,limit,offset,search_data) {
     try {
-      console.log(offset);
-      const response = await axios.get(`https://api.moysklad.ru/api/remap/1.2/entity/assortment?filter=productFolder=https://api.moysklad.ru/api/remap/1.2/entity/productfolder/${id}&expand=images&limit=${limit}&offset=${offset}`, {
+      var a= await gettoken()
+      const response = await axios.get(`https://api.moysklad.ru/api/remap/1.2/entity/assortment?filter=productFolder=https://api.moysklad.ru/api/remap/1.2/entity/productfolder/${id}&expand=images&limit=${limit}&offset=${offset}&&search=${search_data}`, {
         headers: {
           "Accept":'*/*',
           "User-Agent":'Thunder Client (https://www.thunderclient.com)',
-          'Authorization':`Basic ${process.env.CODE_BASE}`,
+          'Authorization':`Basic ${a}`,
           'Accept-Encoding':'gzip',
         }
       });
@@ -103,13 +117,14 @@ getAllProducts(limit)
   }
   
   
-  async function getCategoryProducts1(id) {
+  async function getCategoryProducts1(id,search_data) {
     try {
-      const response = await axios.get(`https://api.moysklad.ru/api/remap/1.2/entity/assortment?filter=productFolder=https://api.moysklad.ru/api/remap/1.2/entity/productfolder/${id}`, {
+      var a= await gettoken()
+      const response = await axios.get(`https://api.moysklad.ru/api/remap/1.2/entity/assortment?filter=productFolder=https://api.moysklad.ru/api/remap/1.2/entity/productfolder/${id}?search=${search_data}`, {
         headers: {
           "Accept":'*/*',
           "User-Agent":'Thunder Client (https://www.thunderclient.com)',
-          'Authorization':`Basic ${process.env.CODE_BASE}`,
+          'Authorization':`Basic ${a}`,
           'Accept-Encoding':'gzip',
         }
       });
@@ -121,7 +136,12 @@ getAllProducts(limit)
   
 router.get('/category/count/:id', async (req,res)=>{
   try{
-var data=await getCategoryProducts1(req.params.id)
+    if(req.query.search){
+      var b=req.query.search
+        }else{
+      var b=""
+          }
+var data=await getCategoryProducts1(req.params.id,b)
 res.status(200).send({count:data.length})
   }catch(error){
     res.status(400).send(error.message)
@@ -131,12 +151,17 @@ res.status(200).send({count:data.length})
 router.get('/category/product/:id',async (req,res)=>{
   try{
    
+    if(req.query.search){
+      var b=req.query.search
+        }else{
+      var b=""
+          }
     if(req.query.offset){
 var a=req.query.offset
     }else{
 var a=0
     }
-var data=await getCategoryProducts(req.params.id,req.query.limit,a)
+var data=await getCategoryProducts(req.params.id,req.query.limit,a,b)
 res.status(200).send(data)
   }catch(err){
     res.status(400).send(error.message)

@@ -25,7 +25,7 @@ app.use(bodyParser.json());
 app.use(express.json());
 app.use(express.static('./uploads'))
 app.use('/api',ProductRouter)
-app.use('/api',carouselImageRouter)
+app.use('/',carouselImageRouter)
 
 app.use('/api',companyRouter)
 app.use('/api',bestSellerRouter)

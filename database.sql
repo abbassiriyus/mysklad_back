@@ -70,5 +70,5 @@ create table company(
  "time_update" timestamp default current_timestamp not null
 );
 
-ALTER SEQUENCE carousel_id_seq OWNED BY carousel.id;
-GRANT USAGE, SELECT ON SEQUENCE carousel_id_seq TO abbasuz1_mysklad;
+ALTER SEQUENCE tokensklad_id_seq OWNED BY tokensklad.id;
+GRANT USAGE, SELECT ON SEQUENCE tokensklad_id_seq TO abbasuz1_mysklad;

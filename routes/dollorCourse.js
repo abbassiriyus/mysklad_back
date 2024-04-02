@@ -7,14 +7,13 @@ const router = express.Router();
 // Barcha dollorlarni olish
 router.get('/dolor_course', async (req, res) => {
     try {
-      const client = await pool.connect();
-      const result = await client.query('SELECT * FROM dolor_course');
+
+      const result = await pool.query('SELECT * FROM dolor_course');
       const dollors = result.rows;
-      client.release();
       res.json(dollors);
     } catch (err) {
       console.error(err);
-      res.status(500).json({ error: 'Internal server error' });
+      res.status(500).json({ error: err.message });
     }
   });
   
@@ -22,14 +21,13 @@ router.get('/dolor_course', async (req, res) => {
   router.post('/dolor_course', async (req, res) => {
     const { dollor } = req.body;
     try {
-      const client = await pool.connect();
-      const result = await client.query('INSERT INTO dolor_course (dollor) VALUES ($1) RETURNING *', [dollor]);
+
+      const result = await pool.query('INSERT INTO dolor_course (dollor) VALUES ($1) RETURNING *', [dollor]);
       const newdollor = result.rows[0];
-      client.release();
       res.status(201).json(newdollor);
     } catch (err) {
       console.error(err);
-      res.status(500).json({ error: 'Internal server error' });
+      res.status(500).json({ error: err.message });
     }
   });
   
@@ -38,14 +36,13 @@ router.get('/dolor_course', async (req, res) => {
     const { id } = req.params;
     const { dollor } = req.body;
     try {
-      const client = await pool.connect();
-      const result = await client.query('UPDATE dolor_course SET dollor = $1, time_update = current_timestamp WHERE id = $2 RETURNING *', [dollor, id]);
+
+      const result = await pool.query('UPDATE dolor_course SET dollor = $1, time_update = current_timestamp WHERE id = $2 RETURNING *', [dollor, id]);
       const updateddollor = result.rows[0];
-      client.release();
       res.json(updateddollor);
     } catch (err) {
       console.error(err);
-      res.status(500).json({ error: 'Internal server error' });
+      res.status(500).json({ error: err.message });
     }
   });
   
@@ -53,13 +50,12 @@ router.get('/dolor_course', async (req, res) => {
   router.delete('/dolor_course/:id', async (req, res) => {
     const { id } = req.params;
     try {
-      const client = await pool.connect();
-      await client.query('DELETE FROM dolor_course WHERE id = $1', [id]);
-      client.release();
+
+      await pool.query('DELETE FROM dolor_course WHERE id = $1', [id]);
       res.sendStatus(204);
     } catch (err) {
       console.error(err);
-      res.status(500).json({ error: 'Internal server error' });
+      res.status(500).json({ error: err.message });
     }
   });
   
