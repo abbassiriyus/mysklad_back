@@ -35,37 +35,34 @@ async function getProduct(id) {
     // req.status(404).send(error.message)
   }
 }
-const downloadImage = async (url, path) => {
+const downloadImage = async (url) => {
   const response = await axios({
     url,
     method: 'GET',
-    responseType: 'stream',
     headers: {
-      "Accept":'*/*',
-      "User-Agent":'Thunder Client (https://www.thunderclient.com)',
       'Authorization':`Basic ${process.env.CODE_BASE}`,
       'Accept-Encoding':'gzip'
     }
   });
-
-  response.data.pipe(fs.createWriteStream(path));
-
-  return new Promise((resolve, reject) => {
-    response.data.on('end', () => {
-      resolve();
-    });
-
-    response.data.on('error', err => {
-      reject(err);
-    });
-  });
+return response.data
 };
+
+router.get("/getimage", async (req,res)=>{
+  try{
+  var url= req.query.url
+    var data=await downloadImage(url)
+
+      res.status(200).send(data) 
+    
+  }catch(err){
+    res.status(400).send(err.message)
+  }
+  })
+
 
 router.get("/oneproduct/:id", async (req,res)=>{
 try{
-  var data=await getProduct(req.params.id)
-  console.log(data);
-  downloadImage(`https://api.moysklad.ru/api/remap/1.2/download/d2c0999f-a801-4e08-99be-228b3d56de07`,"./image")
+  var data=await getProduct(req.params.id);
   res.status(200).send(data)
 }catch(err){
   res.status(400).send(err.message)

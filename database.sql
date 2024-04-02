@@ -26,6 +26,18 @@ create table best_seller(
  "time_create" timestamp default current_timestamp not null,
  "time_update" timestamp default current_timestamp not null
 );
+create table tokensklad(
+ "id" serial primary key,
+ "token" text not null,
+ "time_create" timestamp default current_timestamp not null,
+ "time_update" timestamp default current_timestamp not null
+);
+create table dolor_course(
+ "id" serial primary key,
+ "dollor" text not null,
+ "time_create" timestamp default current_timestamp not null,
+ "time_update" timestamp default current_timestamp not null
+);
 create table carousel(
  "id" serial primary key,
  "image" text not null,

@@ -6,6 +6,9 @@ const userRouter=require("./routes/userRouter.js")
 const companyRouter=require("./routes/companyRouter.js")
 const bestSellerRouter=require("./routes/bestSellerRouter.js")
 const topRouter=require("./routes/topRouter.js")
+const tokenMoyklad=require("./routes/tokenMoyklad.js")
+const dollorCourse=require("./routes/dollorCourse.js")
+
 const carouselImageRouter=require('./routes/carouselImageRouter.js')
 
 
@@ -34,7 +37,8 @@ app.use('/auth',userRouter)
 
 
 
-
+app.use('/api',tokenMoyklad)
+app.use('/api',dollorCourse)
 
 
 
