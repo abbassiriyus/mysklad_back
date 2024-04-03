@@ -50,25 +50,26 @@ async function getProduct(id) {
   }
 }
 const downloadImage = async (url) => {
-  var a= await gettoken()
-  const response = await axios({
-    url,
-    method: 'GET',
+    var a= await gettoken()
+   const response = await axios.get(url, {
+    responseType: 'arraybuffer',
     headers: {
-      'Authorization':`Basic ${a}`,
-      'Accept-Encoding':'gzip'
+         "Accept":'*/*',
+          "User-Agent":'Thunder Client (https://www.thunderclient.com)',
+          'Authorization':`Basic ${a}`,
+          'Accept-Encoding':'gzip',
     }
   });
-return response.data
+
+  fs.writeFileSync("./path.jpg", Buffer.from(response.data, 'binary'));
+  return response.data
 };
 
 router.get("/getimage", async (req,res)=>{
   try{
-  var url= req.query.url
+  var url='https://api.moysklad.ru/api/remap/1.2/download/0ea35c91-876c-4a39-be79-a53ab86af22a'
     var data=await downloadImage(url)
-
       res.status(200).send(data) 
-    
   }catch(err){
     res.status(400).send(err.message)
   }
@@ -169,5 +170,6 @@ res.status(200).send(data)
   }
 
 })
+
 
   module.exports=router
