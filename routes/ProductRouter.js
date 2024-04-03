@@ -102,7 +102,7 @@ getAllProducts(limit)
   async function getCategoryProducts(id,limit,offset,search_data) {
     try {
       var a= await gettoken()
-      const response = await axios.get(`https://api.moysklad.ru/api/remap/1.2/entity/assortment?filter=productFolder=https://api.moysklad.ru/api/remap/1.2/entity/productfolder/${id}&expand=images&limit=${limit}&offset=${offset}&&search=${search_data}`, {
+      const response = await axios.get(`https://api.moysklad.ru/api/remap/1.2/entity/assortment?filter=productFolder=https://api.moysklad.ru/api/remap/1.2/entity/productfolder/${id}&expand=images&limit=${limit}&offset=${offset}`, {
         headers: {
           "Accept":'*/*',
           "User-Agent":'Thunder Client (https://www.thunderclient.com)',
@@ -110,8 +110,8 @@ getAllProducts(limit)
           'Accept-Encoding':'gzip',
         }
       });
-      console.log(response);
-      return response.data.rows;
+var a=(response.data.rows).filter(item=>(item.name).includes(search_data) || (item.description).includes(search_data) )
+      return a;
     } catch (error) {
     }
   }
@@ -120,7 +120,7 @@ getAllProducts(limit)
   async function getCategoryProducts1(id,search_data) {
     try {
       var a= await gettoken()
-      const response = await axios.get(`https://api.moysklad.ru/api/remap/1.2/entity/assortment?filter=productFolder=https://api.moysklad.ru/api/remap/1.2/entity/productfolder/${id}?search=${search_data}`, {
+      const response = await axios.get(`https://api.moysklad.ru/api/remap/1.2/entity/assortment?filter=productFolder=https://api.moysklad.ru/api/remap/1.2/entity/productfolder/${id}`, {
         headers: {
           "Accept":'*/*',
           "User-Agent":'Thunder Client (https://www.thunderclient.com)',
@@ -128,7 +128,9 @@ getAllProducts(limit)
           'Accept-Encoding':'gzip',
         }
       });
-      return response.data.rows;
+      var a=(response.data.rows).filter(item=>(item.name).includes(search_data) || (item.description).includes(search_data) )
+
+      return a;
     } catch (error) {
     return error.message
     }
@@ -150,7 +152,6 @@ res.status(200).send({count:data.length})
 })
 router.get('/category/product/:id',async (req,res)=>{
   try{
-   
     if(req.query.search){
       var b=req.query.search
         }else{

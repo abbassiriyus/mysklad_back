@@ -1,7 +1,10 @@
 const express = require('express')
 const app = express()
 const ProductRouter=require("./routes/ProductRouter.js")
+
 const CategoryRouter=require("./routes/CategoryRouter.js")
+const documentRouter=require("./routes/document.js")
+
 const userRouter=require("./routes/userRouter.js")
 const companyRouter=require("./routes/companyRouter.js")
 const bestSellerRouter=require("./routes/bestSellerRouter.js")
@@ -33,6 +36,8 @@ app.use('/api',topRouter)
 
 
 app.use('/',CategoryRouter)
+app.use('/',documentRouter)
+
 app.use('/auth',userRouter)
 
 

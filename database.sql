@@ -38,6 +38,12 @@ create table dolor_course(
  "time_create" timestamp default current_timestamp not null,
  "time_update" timestamp default current_timestamp not null
 );
+create table document(
+ "id" serial primary key,
+ "image" text not null,
+ "time_create" timestamp default current_timestamp not null,
+ "time_update" timestamp default current_timestamp not null
+);
 create table carousel(
  "id" serial primary key,
  "image" text not null,
@@ -70,5 +76,5 @@ create table company(
  "time_update" timestamp default current_timestamp not null
 );
 
-ALTER SEQUENCE tokensklad_id_seq OWNED BY tokensklad.id;
-GRANT USAGE, SELECT ON SEQUENCE tokensklad_id_seq TO abbasuz1_mysklad;
+ALTER SEQUENCE document_id_seq OWNED BY document.id;
+GRANT USAGE, SELECT ON SEQUENCE document_id_seq TO abbasuz1_mysklad;
