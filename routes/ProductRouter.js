@@ -64,7 +64,7 @@ const downloadImage = async (url) => {
 
 router.get("/getimage", async (req,res)=>{
   try{
-  var url='https://api.moysklad.ru/api/remap/1.2/download/0ea35c91-876c-4a39-be79-a53ab86af22a'
+  var url=req.query.url
   console.log(req.query);
     var data=await downloadImage(url)
       res.status(200).send(data) 
