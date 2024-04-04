@@ -51,6 +51,7 @@ async function getProduct(id) {
 }
 const downloadImage = async (url) => {
    const response = await axios.get(url, {
+    responseType: 'arraybuffer',
     headers: {
          "Accept":'*/*',
           "User-Agent":'Thunder Client (https://www.thunderclient.com)',
