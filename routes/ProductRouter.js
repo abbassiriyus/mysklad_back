@@ -15,6 +15,16 @@ async  function gettoken(){
       return "no"
     }
 }
+async  function gettoken2(){
+  const result = await axios.get('https:fre.abbas.uz/api/tokensklad');
+      const tokens = result.data;
+      console.log(tokens);
+    if(tokens.length!=0){
+      return tokens[0].token
+    }else{
+      return "no"
+    }
+}
 async function getAllProducts(id) {
   try {
     var a= await gettoken()
@@ -55,7 +65,7 @@ const downloadImage = async (url) => {
     headers: {
          "Accept":'*/*',
           "User-Agent":'Thunder Client (https://www.thunderclient.com)',
-          'Authorization':`Basic d2ViYWJiYXM5QGdtYWlsLmNvbTp0dHVzaDEyMzNhYQ==`,
+          'Authorization':`Basic ${ gettoken2() }`,
           'Accept-Encoding':'gzip',
     }
   });
@@ -65,7 +75,7 @@ const downloadImage = async (url) => {
 router.get("/getimage", async (req,res)=>{
   try{
   var url=req.query.url
-  console.log(req.query);
+
     var data=await downloadImage(url)
       res.status(200).send(data) 
   }catch(err){
