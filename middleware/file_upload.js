@@ -13,7 +13,7 @@ var  upload_file=(req)=>{
     var file=req.files.image
     var name_file=Date.now()+getRandomInt(12312321)
     var file_tit=file.name.slice(file.name.lastIndexOf('.'))
-    file.mv(`${__dirname}/../uploads/${name_file+file_tit}`)
+    file.mv(`${__dirname}/../uploads/${name_file+"local_image"+file_tit}`)
     send_image_link=req.protocol+"://"+req.hostname+"/"+name_file+"local_image"+file_tit
     }else{
 if(req.body.image){
@@ -44,7 +44,7 @@ if(file_tit.includes("local_image")){
     var file=req.files.image
     var name_file=Date.now()+getRandomInt(12312321)
     var file_tit=file.name.slice(file.name.lastIndexOf('.'))
-    file.mv(`${__dirname}/../uploads/${name_file+file_tit}`)
+    file.mv(`${__dirname}/../uploads/${name_file+"local_image"+file_tit}`)
     send_image_link=req.protocol+"://"+req.hostname+"/"+name_file+"local_image"+file_tit
     }else{
      send_image_link=req.body.image

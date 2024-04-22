@@ -13,7 +13,7 @@ create table users(
  "password" text not null,
  "time_create" timestamp default current_timestamp not null,
  "time_update" timestamp default current_timestamp not null
-)
+);
 create table top_tovar(
  "id" serial primary key,
  "category_id" text not null,

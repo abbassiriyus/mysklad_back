@@ -9,7 +9,7 @@ router.get('/tokensklad', async (req, res) => {
     try {
       const result = await pool.query('SELECT * FROM tokensklad');
       const tokens = result.rows;
-     
+
       res.json(tokens);
     } catch (err) {
       console.error(err);
