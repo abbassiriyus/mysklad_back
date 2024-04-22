@@ -1,5 +1,5 @@
 
-
+const jwt = require('jsonwebtoken');
 
 
 
@@ -14,14 +14,14 @@ const validateJWT = (req, res, next) => {
       const token = req.header('authorization').split(' ')[1]; // Bearer <token>
     
       try {
-        // Verify makes sure that the token hasn't expired and has been issued by us.
-        result = jwt.verify(token, SECRET);
-        // Let's pass back the decoded token to the request object.
+     
+        result = jwt.verify(token, 'your_secret_key');
+       
         req.user = result;
-        // Call next to pass execution to the subsequent middleware.
+    
         next();
       } catch (err) {
-        // Throw an error just in case anything goes wrong with verification.
+      
         throw new Error(err);
       }
     } else {

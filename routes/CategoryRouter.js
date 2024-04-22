@@ -20,10 +20,26 @@ router.post('/api/category', validateJWT , async (req, res) => {
 });
 
 // Retrieve all categories
+router.get('/api/category/all', async (req, res) => {
+  try {
+    const query = 'SELECT * FROM category';
+    const allCategories = await pool.query(query);
+    for (let i = 0; i < allCategories.rows.length; i++) {
+    if(allCategories.rows[i].subcategory==0){
+      allCategories.rows[i].count=allCategories.rows.filter(item=>(allCategories.rows[i].subcategory==item.id))
+     }
+    } 
+    res.json(allCategories.rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+// Retrieve all categories
 router.get('/api/category', async (req, res) => {
   try {
     const query = 'SELECT * FROM category';
     const allCategories = await pool.query(query);
+   
     res.json(allCategories.rows);
   } catch (err) {
     res.status(500).json({ error: err.message });
