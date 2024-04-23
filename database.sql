@@ -76,5 +76,12 @@ create table company(
  "time_update" timestamp default current_timestamp not null
 );
 
-ALTER SEQUENCE document_id_seq OWNED BY document.id;
-GRANT USAGE, SELECT ON SEQUENCE document_id_seq TO abbasuz1_mysklad;
+create table header_category(
+ "id" serial primary key,
+ "category_id" integer not null,
+ "time_create" timestamp default current_timestamp not null,
+ "time_update" timestamp default current_timestamp not null
+)
+
+ALTER SEQUENCE header_category_id_seq OWNED BY header_category.id;
+GRANT USAGE, SELECT ON SEQUENCE header_category_id_seq TO abbasuz1_abbas1;
