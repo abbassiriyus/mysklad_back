@@ -27,7 +27,7 @@ router.post('/header_category', async (req, res) => {
       if(result.rows[i].category_id==result1.rows[j].id){
         result.rows[i].category_title=result1.rows[j].category_title
         result.rows[i].image=result1.rows[j].image
-        result.rows[i].category_id=result1.rows[j].category_id
+        result.rows[i].category_id1=result1.rows[j].category_id
       }
       }
       }
