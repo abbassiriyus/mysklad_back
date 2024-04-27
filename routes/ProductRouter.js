@@ -93,7 +93,7 @@ try{
 }
 })
 
-  router.get('/product',(req,res)=>{
+ router.get('/product',(req,res)=>{
     var { limit } = req.query; 
     if(!limit){
       limit=10
