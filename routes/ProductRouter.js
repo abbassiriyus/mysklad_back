@@ -105,7 +105,6 @@ getAllProducts(limit)
   .catch(error => {
     res.status(404).send(error.message)
   });
-
   })
 
   async function getCategoryProducts(id,limit,offset,search_data) {
