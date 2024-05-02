@@ -50,12 +50,18 @@ create table carousel(
  "time_create" timestamp default current_timestamp not null,
  "time_update" timestamp default current_timestamp not null
 );
+create table homiy(
+ "id" serial primary key,
+ "image" text not null,
+ "time_create" timestamp default current_timestamp not null,
+ "time_update" timestamp default current_timestamp not null
+);
 create table contact(
  "id" serial primary key,
-"fullname" text not null,
-"phone" text not null,
-"email" text not null,
-"message" text not null,
+ "fullname" text not null,
+ "phone" text not null,
+ "email" text not null,
+ "message" text not null,
  "time_create" timestamp default current_timestamp not null,
  "time_update" timestamp default current_timestamp not null
 );
@@ -76,12 +82,12 @@ create table company(
  "time_update" timestamp default current_timestamp not null
 );
 
-create table header_category(
+create table homiy(
  "id" serial primary key,
  "category_id" integer not null,
  "time_create" timestamp default current_timestamp not null,
  "time_update" timestamp default current_timestamp not null
 )
 
-ALTER SEQUENCE header_category_id_seq OWNED BY header_category.id;
-GRANT USAGE, SELECT ON SEQUENCE header_category_id_seq TO abbasuz1_abbas1;
+ALTER SEQUENCE homiy_id_seq OWNED BY homiy.id;
+GRANT USAGE, SELECT ON SEQUENCE homiy_id_seq TO abbasuz1_abbas1;

@@ -12,6 +12,8 @@ const topRouter=require("./routes/topRouter.js")
 const tokenMoyklad=require("./routes/tokenMoyklad.js")
 const dollorCourse=require("./routes/dollorCourse.js")
 const headerCategory=require("./routes/header_category.js")
+const homiyRouter=require("./routes/homiyRouter.js")
+
 
 
 const carouselImageRouter=require('./routes/carouselImageRouter.js')
@@ -30,6 +32,8 @@ app.use(bodyParser.json());
 app.use(express.json());
 app.use(express.static('./uploads'))
 app.use('/api',ProductRouter)
+app.use('/api',homiyRouter)
+
 app.use('/',carouselImageRouter)
 
 app.use('/api',companyRouter)
