@@ -98,7 +98,7 @@ try{
     if(!limit){
       limit=10
     }
-getAllProducts(limit)
+ getAllProducts(limit)
   .then(products => {
     res.status(200).send(products)
   })
