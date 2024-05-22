@@ -82,10 +82,20 @@ router.put('/api/category/:id',validateJWT, async (req, res) => {
      var image=put_file((category.rows[0]).image,req)
     }
     const { category_id, category_title,  subcategory } = req.body;
+    if((req.body && req.body.image ) || (req.file && req.file.image )) {
     const query = 'UPDATE category SET category_id = $1, category_title = $2, image = $3, subcategory = $4 WHERE id = $5 RETURNING *';
     const values = [category_id, category_title, image, subcategory, id];
     const updatedCategory = await pool.query(query, values);
     res.json(updatedCategory.rows[0]);
+    }else{
+      const query = 'UPDATE category SET category_id = $1, category_title = $2, subcategory = $3 WHERE id = $4 RETURNING *';
+      const values = [category_id, category_title, subcategory, id];
+      const updatedCategory = await pool.query(query, values);
+      res.json(updatedCategory.rows[0]);
+    }
+
+
+
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
