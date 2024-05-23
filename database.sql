@@ -47,6 +47,7 @@ create table document(
 create table carousel(
  "id" serial primary key,
  "image" text not null,
+ "title" varchar(50) not null,
  "time_create" timestamp default current_timestamp not null,
  "time_update" timestamp default current_timestamp not null
 );
