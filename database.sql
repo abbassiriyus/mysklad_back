@@ -88,7 +88,7 @@ create table homiy(
  "category_id" integer not null,
  "time_create" timestamp default current_timestamp not null,
  "time_update" timestamp default current_timestamp not null
-)
+);
 
 ALTER SEQUENCE homiy_id_seq OWNED BY homiy.id;
 GRANT USAGE, SELECT ON SEQUENCE homiy_id_seq TO abbasuz1_abbas1;
