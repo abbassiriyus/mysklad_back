@@ -6,7 +6,7 @@ const { default: axios } = require('axios');
 const router = express.Router();
 
 // Create a new category
-router.post('/api/category', validateJWT , async (req, res) => {
+router.post('/api/category',  async (req, res) => {
   try {
     const { category_id, category_title,  subcategory } = req.body;
     var image=upload_file(req)
