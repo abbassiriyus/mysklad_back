@@ -73,7 +73,7 @@ router.get('/api/category/:id', async (req, res) => {
 // Retrieve all categories
 
 // Update a category
-router.put('/api/category/:id',validateJWT, async (req, res) => {
+router.put('/api/category/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const query1 = 'SELECT * FROM category WHERE id = $1';
@@ -102,7 +102,7 @@ router.put('/api/category/:id',validateJWT, async (req, res) => {
 });
 
 // Delete a category
-router.delete('/api/category/:id',validateJWT, async (req, res) => {
+router.delete('/api/category/:id', async (req, res) => {
   try {
     const { id } = req.params;
 
