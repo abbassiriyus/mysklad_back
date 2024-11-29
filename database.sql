@@ -51,12 +51,7 @@ create table carousel(
  "time_create" timestamp default current_timestamp not null,
  "time_update" timestamp default current_timestamp not null
 );
-create table homiy(
- "id" serial primary key,
- "image" text not null,
- "time_create" timestamp default current_timestamp not null,
- "time_update" timestamp default current_timestamp not null
-);
+
 create table contact(
  "id" serial primary key,
  "fullname" text not null,
