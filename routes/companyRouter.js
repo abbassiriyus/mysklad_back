@@ -21,24 +21,31 @@ router.post('/company', async (req, res) => {
     
     } = req.body;
 var image=upload_file(req)
-    const query =
-      'INSERT INTO company (phone, email, address, facebook, lan, lac, telegram, youtobe, instagram, image) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *';
 
-    const values = [
-      phone,
-      email,
-      address,
-      facebook,
-      lan,
-      lac,
-      telegram,
-      youtobe,
-      instagram,
-      image,
-    ];
 
-    const result = await pool.query(query, values);
-    res.json(result.rows[0]);
+console.log("=================>");
+console.log(req);
+console.log("=================>");
+
+    // const query =
+    //   'INSERT INTO company (phone, email, address, facebook, lan, lac, telegram, youtobe, instagram, image) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *';
+
+    // const values = [
+    //   phone,
+    //   email,
+    //   address,
+    //   facebook,
+    //   lan,
+    //   lac,
+    //   telegram,
+    //   youtobe,
+    //   instagram,
+    //   image,
+    // ];
+
+    // const result = await pool.query(query, values);
+    // res.json(result.rows[0]);
+    res.status(200).send("da")
   } catch (error) {
     console.error('Error creating company:', error);
     res.status(500).json({ error: error.message });

@@ -8,10 +8,10 @@ const router = express.Router();
 // Create a new carousel
 router.post('/api/carousel', async (req, res) => {
   try {
-    var {title}=req.body
+    var {title,category_id}=req.body
     var image=upload_file(req)
-    const query = 'INSERT INTO carousel (image,title) VALUES ($1,$2) RETURNING *';
-    const values = [image,title];
+    const query = 'INSERT INTO carousel (image,title,category_id) VALUES ($1,$2,$3) RETURNING *';
+    const values = [image,title,category_id];
     const newcarousel = await pool.query(query, values);
     res.json(newcarousel.rows[0]);
   } catch (err) {
@@ -46,7 +46,7 @@ router.get('/api/carousel/:id', async (req, res) => {
 router.put('/api/carousel/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    var { title }=req.body
+    var { title,category_id }=req.body
     const query1 = 'SELECT * FROM carousel WHERE id = $1';
     const carousel = await pool.query(query1, [id]);
   
@@ -54,12 +54,12 @@ router.put('/api/carousel/:id', async (req, res) => {
      if(carousel.rows[0]){
      var image=put_file((carousel.rows[0]).image,req)
     } 
-    const query = 'UPDATE carousel SET image = $1,title=$2 WHERE id = $3 RETURNING *';
-    const values = [image,title, id];
+    const query = 'UPDATE carousel SET image = $1,title=$2,category_id=$3 WHERE id = $4 RETURNING *';
+    const values = [image,title,category_id, id];
     const updatedcarousel = await pool.query(query, values);
     res.json(updatedcarousel.rows[0]); 
    }else{
-    const query = 'UPDATE carousel SET title=$1 WHERE id = $1 RETURNING *';
+    const query = 'UPDATE carousel SET title=$1,category_id=$2 WHERE id = $3 RETURNING *';
     const values = [ title, id];
     const updatedcarousel = await pool.query(query, values);
     res.json(updatedcarousel.rows[0]); 

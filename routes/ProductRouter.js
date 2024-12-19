@@ -83,6 +83,26 @@ router.get("/getimage", async (req,res)=>{
   }
   })
 
+  app.get('/get-image', async (req, res) => {
+    const imageUrl = 'https://api.moysklad.ru/api/remap/1.2/download/bcefab8c-10ca-477a-83d1-126187f28c52';
+    var token="YWRtaW5Ad2ViYWJiYXM5MTphYmJhczEyMw=="
+    try {
+        const response = await axios.get(imageUrl, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            },
+            responseType: 'arraybuffer'
+        });
+
+        res.set('Content-Type', response.headers['content-type']);
+        res.set('Content-Disposition', 'inline; filename=image.jpg');
+        res.send(response.data);
+    } catch (error) {
+        console.error('Error fetching image:', error);
+        res.status(500).send('Error fetching image');
+    }
+});
+
 
 router.get("/oneproduct/:id", async (req,res)=>{
 try{
