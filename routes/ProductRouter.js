@@ -92,7 +92,7 @@ router.get("/getimage", async (req,res)=>{
                 'Authorization': `Bearer ${token}`
             },
             responseType: 'arraybuffer'
-        });
+        }); 
 
         res.set('Content-Type', response.headers['content-type']);
         res.set('Content-Disposition', 'inline; filename=image.jpg');
@@ -116,7 +116,7 @@ try{
  router.get('/product',(req,res)=>{
     var { limit } = req.query; 
     if(!limit){
-      limit=10
+      limit=1000
     }
  getAllProducts(limit)
   .then(products => {
@@ -157,7 +157,6 @@ var a=(response.data.rows).filter(item=>(item.name).includes(search_data) || (it
         }
       });
       var a=(response.data.rows).filter(item=>(item.name).includes(search_data) || (item.description).includes(search_data) )
-
       return a;
     } catch (error) {
     return error.message
@@ -176,7 +175,6 @@ res.status(200).send({count:data.length})
   }catch(error){
     res.status(400).send(error.message)
   }
-
 })
 router.get('/category/product/:id',async (req,res)=>{
   try{
