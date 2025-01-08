@@ -4,35 +4,16 @@ const router = express.Router();
 const axios = require('axios');
 const fs=require('fs')
 var pool =require('../db')
+var token=process.env.CODE_BASE
 
-async  function gettoken(){
-  const result = await pool.query('SELECT * FROM tokensklad');
-      const tokens = result.rows;
-      console.log(tokens);
-    if(tokens.length!=0){
-      return tokens[0].token
-    }else{
-      return "no"
-    }
-}
-async  function gettoken2(){
-  const result = await axios.get('https:fre.abbas.uz/api/tokensklad');
-      const tokens = result.data;
-      console.log(tokens);
-    if(tokens.length!=0){
-      return tokens[0].token
-    }else{
-      return "no"
-    }
-}
 async function getAllProducts(id) {
   try {
-    var a= await gettoken()
+  
     const response = await axios.get(`https://api.moysklad.ru/api/remap/1.2/entity/product?expand=images&limit=${id}`, {
       headers: {
         "Accept":'*/*',
         "User-Agent":'Thunder Client (https://www.thunderclient.com)',
-        'Authorization':`Basic ${a}`,
+        'Authorization':`Basic ${token}`,
         'Accept-Encoding':'gzip',
       }
     });
@@ -44,13 +25,11 @@ async function getAllProducts(id) {
 
 async function getProduct(id) {
   try {
-    console.log(id);
-    var a= await gettoken()
     const response = await axios.get(`https://api.moysklad.ru/api/remap/1.2/entity/product/${id}?expand=images`, {
       headers: {
         "Accept":'*/*',
         "User-Agent":'Thunder Client (https://www.thunderclient.com)',
-        'Authorization':`Basic ${a}`,
+        'Authorization':`Basic ${token}`,
         'Accept-Encoding':'gzip',
       }
     });
@@ -65,7 +44,7 @@ const downloadImage = async (url) => {
     headers: {
          "Accept":'*/*',
           "User-Agent":'Thunder Client (https://www.thunderclient.com)',
-          'Authorization':`Basic ${ gettoken2() }`,
+          'Authorization':`Basic ${token}`,
           'Accept-Encoding':'gzip',
     }
   });
@@ -112,13 +91,16 @@ try{
   })
 
   async function getCategoryProducts(id,limit,offset,search_data) {
+    if(!limit){
+      limit=100
+    }
     try {
-      var a= await gettoken()
+   
       const response = await axios.get(`https://api.moysklad.ru/api/remap/1.2/entity/assortment?filter=productFolder=https://api.moysklad.ru/api/remap/1.2/entity/productfolder/${id}&expand=images&limit=${limit}&offset=${offset}`, {
         headers: {
           "Accept":'*/*',
           "User-Agent":'Thunder Client (https://www.thunderclient.com)',
-          'Authorization':`Basic ${a}`,
+          'Authorization':`Basic ${token}`,
           'Accept-Encoding':'gzip',
         }
       });
@@ -133,12 +115,12 @@ var a=(response.data.rows).filter(item=>(item.name).includes(search_data) || (it
   
   async function getCategoryProducts1(id,search_data) {
     try {
-      var a= await gettoken()
+     
       const response = await axios.get(`https://api.moysklad.ru/api/remap/1.2/entity/assortment?filter=productFolder=https://api.moysklad.ru/api/remap/1.2/entity/productfolder/${id}`, {
         headers: {
           "Accept":'*/*',
           "User-Agent":'Thunder Client (https://www.thunderclient.com)',
-          'Authorization':`Basic ${a}`,
+          'Authorization':`Basic ${token}`,
           'Accept-Encoding':'gzip',
         }
       });
