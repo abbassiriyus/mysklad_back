@@ -7,6 +7,7 @@ var pool =require('../db')
 var token=process.env.CODE_BASE
 
 async function getAllProducts(id) {
+  token=process.env.CODE_BASE
   try {
   
     const response = await axios.get(`https://api.moysklad.ru/api/remap/1.2/entity/product?expand=images&limit=${id}`, {
@@ -24,6 +25,7 @@ async function getAllProducts(id) {
 }
 
 async function getProduct(id) {
+  token=process.env.CODE_BASE
   try {
     const response = await axios.get(`https://api.moysklad.ru/api/remap/1.2/entity/product/${id}?expand=images`, {
       headers: {
@@ -39,6 +41,7 @@ async function getProduct(id) {
   }
 }
 const downloadImage = async (url) => {
+  token=process.env.CODE_BASE
    const response = await axios.get(url, {
     responseType: 'arraybuffer',
     headers: {
@@ -91,6 +94,7 @@ try{
   })
 
   async function getCategoryProducts(id,limit,offset,search_data) {
+    token=process.env.CODE_BASE
     if(!limit){
       limit=100
     }
@@ -114,6 +118,7 @@ var a=(response.data.rows).filter(item=>(item.name).includes(search_data) || (it
   
   
   async function getCategoryProducts1(id,search_data) {
+    token=process.env.CODE_BASE
     try {
      
       const response = await axios.get(`https://api.moysklad.ru/api/remap/1.2/entity/assortment?filter=productFolder=https://api.moysklad.ru/api/remap/1.2/entity/productfolder/${id}`, {

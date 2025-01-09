@@ -1,6 +1,6 @@
 const fs =require('fs')
-
-
+const { exec } = require('child_process');
+const client = require('../db')
 function getRandomInt(max) {
     return Math.floor(Math.random() * max);
   }
@@ -38,6 +38,24 @@ if(file_tit.includes("local_image")){
 }
 }
 
+async function updateEnvUrl(newUrl) {
+  try {
+      // .env faylini yangilash
+      const envFilePath = '.env';
+      let envFileContent = fs.readFileSync(envFilePath, 'utf8');
+
+      // URL ni yangilash
+      const newEnvFileContent = envFileContent.replace(/^(CODE_BASE=).*/m, `$1'${newUrl}'`);
+
+      // Yangilangan .env faylini saqlash
+      fs.writeFileSync(envFilePath, newEnvFileContent, 'utf8');
+      console.log('URL muvaffaqiyatli yangilandi:', newUrl);
+  
+  } catch (err) {
+    console.error('Xatolik:', err);
+  } 
+}
+
 var put_file=(file_name,req)=>{
   var file_tit=file_name.slice(file_name.lastIndexOf('/'))
 if(file_tit.includes("local_image")){
@@ -57,4 +75,5 @@ if(file_tit.includes("local_image")){
 
 }
 
-module.exports={upload_file,delete_file,put_file}
+
+module.exports={upload_file,delete_file,put_file,updateEnvUrl}
