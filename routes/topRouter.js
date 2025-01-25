@@ -5,24 +5,33 @@ const router = express.Router();
 
 // Yeni bir üst tovar oluşturma
 router.post('/top_tovar', async (req, res) => {
-    try {
-      const { category_id } = req.body;
-  
-      const query =
-        'INSERT INTO top_tovar (category_id) VALUES ($1) RETURNING *';
-  
+  try {
+    const { category_id } = req.body;
+
+    // Jadvalda mavjud bo'lgan elementni olish
+    const existingResult = await pool.query('SELECT * FROM top_tovar');
+
+    if (existingResult.rows.length > 0) {
+      // Agar mavjud bo'lsa, yangilash
+      const query = 'UPDATE top_tovar SET category_id = $1 RETURNING *';
       const result = await pool.query(query, [category_id]);
       res.json(result.rows[0]);
-    } catch (error) {
-      console.error('Error creating top tovar:', error);
-      res.status(500).json({ error: error.message });
+    } else {
+      // Agar mavjud bo'lmasa, yangi qo'shish
+      const query = 'INSERT INTO top_tovar (category_id) VALUES ($1) RETURNING *';
+      const result = await pool.query(query, [category_id]);
+      res.json(result.rows[0]);
     }
-  });
+  } catch (error) {
+    console.error('Error creating top tovar:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
   
   // Tüm üst tovarları getirme
   router.get('/top_tovar', async (req, res) => {
     try {
-      const result = await pool.query('SELECT * FROM top_tovar');
+      const result = await pool.query('SELECT * FROM top_tovar ORDER BY id DESC');
       res.json(result.rows);
     } catch (error) {
       console.error('Error retrieving top tovarlar:', error);
