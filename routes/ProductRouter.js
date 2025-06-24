@@ -3,7 +3,8 @@ const express = require('express');
 const router = express.Router();
 const axios = require('axios');
 const fs=require('fs')
-var pool =require('../db')
+var pool =require('../db');
+const { log } = require('console');
 var token=process.env.CODE_BASE
 
 async function getAllProducts(id) {
@@ -14,13 +15,15 @@ async function getAllProducts(id) {
       headers: {
         "Accept":'*/*',
         "User-Agent":'Thunder Client (https://www.thunderclient.com)',
-        'Authorization':`Basic ${token}`,
+        'Authorization':`Basic ${process.env.CODE_BASE}`,
         'Accept-Encoding':'gzip',
       }
     });
     return response.data.rows;
   } catch (error) {
-    req.status(404).send(error.message)
+      console.log(error)
+    return error.message
+    
   }
 }
 

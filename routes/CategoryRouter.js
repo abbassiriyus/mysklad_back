@@ -42,8 +42,9 @@ async function getAllCategory() {
         'Accept-Encoding':'gzip',
       }
     });
+     console.log(response);
     return response.data.rows;
-    console.log(response);
+   
   } catch (error) {
     console.log(error.message);
   }
